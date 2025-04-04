@@ -164,3 +164,8 @@ Contributions are welcome! Please feel free to open an issue or submit a pull re
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Next Steps
+
+1. set flag to start from a specific number `dirseq -s 55`
+2. pad flag to output 0 padded numbers `dirseq -p 3` 
