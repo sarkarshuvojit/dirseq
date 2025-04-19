@@ -183,5 +183,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Next Steps
 
-1. set flag to start from a specific number `dirseq -s 55`
-2. pad flag to output 0 padded numbers `dirseq -p 3` 
+1. create subcmd to override sequence for current dir
+   dirseq set seq S 
+2. remember the padding
+   dirseq set pad P
+   
