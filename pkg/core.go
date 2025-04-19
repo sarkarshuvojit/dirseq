@@ -9,7 +9,7 @@ import (
 	"github.com/sarkarshuvojit/pprinter"
 )
 
-var PPrinter = pprinter.WithTheme(&pprinter.AyuTheme)
+var PPrinter = pprinter.WithTheme(&pprinter.PastelTheme)
 
 func Show(
 	padding int,
@@ -46,15 +46,17 @@ func Show(
 		os.Exit(1)
 	}
 
-	lastSeq, err := GetSequence(db, absPath)
+	lastSeq, configPadding, err := GetSequenceAndPadding(db, absPath)
 	if err != nil {
 		slog.Error("Failed to retrieve sequence", "path", absPath, "error", err)
 		os.Exit(1)
 	}
 
 	newSeq := lastSeq + 1
-
-	fmt.Printf("%0*d\n", padding, newSeq)
+	if padding > 0 {
+		configPadding = padding
+	}
+	fmt.Printf("%0*d\n", configPadding, newSeq)
 
 	err = UpdateSequence(db, absPath, newSeq)
 	if err != nil {

@@ -32,10 +32,12 @@ func SetupDatabase() (*sql.DB, error) {
 	}
 
 	createTableSQL := fmt.Sprintf(`
-	CREATE TABLE IF NOT EXISTS %s (
+	CREATE TABLE IF NOT EXISTS %[1]s (
 		abs_path VARCHAR NOT NULL PRIMARY KEY,
-		last_seq INT NOT NULL DEFAULT 0
-	);`, TableName)
+		last_seq INT NOT NULL DEFAULT 0,
+		padding INT NOT NULL DEFAULT 0
+	);
+	`, TableName)
 
 	_, err = db.Exec(createTableSQL)
 	if err != nil {
@@ -62,6 +64,25 @@ func GetSequence(db *sql.DB, path string) (int, error) {
 	return lastSeq, nil
 }
 
+func GetSequenceAndPadding(db *sql.DB, path string) (int, int, error) {
+	var lastSeq int
+	var padding int
+
+	querySQL := fmt.Sprintf("SELECT last_seq, padding FROM %s WHERE abs_path = ?", TableName)
+
+	row := db.QueryRow(querySQL, path)
+	err := row.Scan(&lastSeq, &padding)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, 0, nil // No entry for this path; return defaults
+		}
+		return 0, 0, fmt.Errorf("error scanning sequence row for path '%s': %w", path, err)
+	}
+
+	return lastSeq, padding, nil
+}
+
 func UpdateSequence(db *sql.DB, path string, newSeq int) error {
 	upsertSQL := fmt.Sprintf(`
 	INSERT INTO %s (abs_path, last_seq) VALUES (?, ?)
@@ -71,6 +92,21 @@ func UpdateSequence(db *sql.DB, path string, newSeq int) error {
 	_, err := db.Exec(upsertSQL, path, newSeq)
 	if err != nil {
 		return fmt.Errorf("error executing upsert for path '%s' with sequence %d: %w", path, newSeq, err)
+	}
+	return nil
+}
+
+func UpdatePadding(db *sql.DB, path string, padding int) error {
+	updatePaddingSql := fmt.Sprintf(`
+		INSERT INTO %s (abs_path, padding)
+		VALUES (?, ?)
+		ON CONFLICT(abs_path)
+		DO UPDATE SET padding = excluded.padding
+	`, TableName)
+
+	_, err := db.Exec(updatePaddingSql, path, padding)
+	if err != nil {
+		return fmt.Errorf("error executing upsert for path '%s' with sequence %d: %w", path, padding, err)
 	}
 	return nil
 }

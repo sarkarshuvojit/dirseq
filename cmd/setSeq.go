@@ -30,7 +30,6 @@ Example:
   $ dirseq
   56`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("setSeq called")
 		if len(args) != 1{
 			return errors.New("Expecting one arg; the number to be set.")
 		}

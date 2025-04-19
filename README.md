@@ -154,6 +154,33 @@ $ dirseq -p 4
 0003
 ```
 
+**Example 6: Setting the Starting Sequence**
+
+Use `set-seq` to manually set the current sequence number for the directory. The next time `dirseq` is called, it will return the next number after the one you set.
+
+```bash
+$ dirset set-seq 55
+Set sequence to 55 for /my/project
+
+$ dirseq
+56
+```
+
+**Example 7: Configuring Default Padding for the Directory**
+
+Use `set-pad` to store a default padding width for the current directory. Once set, `dirseq` will automatically pad the output unless overridden with `--pad`.
+
+```bash
+$ dirset set-pad 4
+Set default padding to 4 for /my/project
+
+$ dirseq
+0057
+
+$ dirseq --pad 2
+57
+```
+
 
 ## 🛠️ How it Works
 
