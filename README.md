@@ -139,6 +139,24 @@ build_my_app --output release-build-$(dirseq).zip
 # Creates file: release-build-2.zip
 ```
 
+**Example 5: Padding Outputs**
+
+You can use the -p flag to pad the sequence number with leading zeros to a fixed width.
+
+This is useful if you're using the output as part of filenames and want consistent length (e.g., file-0003.txt).
+
+```bash
+$ dirseq
+1
+
+$ dirseq
+2
+
+$ dirseq -p 4
+0003
+```
+
+
 ## 🛠️ How it Works
 
 `dirseq` stores its state in a simple SQLite database file located at:

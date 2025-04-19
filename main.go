@@ -2,8 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"fmt"
-	"log/slog" 
+	"log/slog"
 	"os"
 	"path/filepath"
 
@@ -16,7 +17,12 @@ const (
 	tableName     = "sequences"
 )
 
+var padding int
+
 func main() {
+	flag.IntVar(&padding, "p", 0, "Pad the output with leading zeros to reach the specified length (e.g., -p 4 => 0055)")
+	flag.Parse()
+
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		slog.Error("Failed to get user home directory", "error", err)
@@ -58,7 +64,7 @@ func main() {
 
 	newSeq := lastSeq + 1
 
-	fmt.Println(newSeq)
+	fmt.Printf("%0*d\n", padding, newSeq)
 
 	err = updateSequence(db, absPath, newSeq)
 	if err != nil {
