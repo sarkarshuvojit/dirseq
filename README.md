@@ -102,8 +102,6 @@ dirseq
 
 **Example 2: Creating Sequentially Numbered Directories**
 
-This is the example you requested!
-
 ```bash
 # In your project directory
 mkdir $(dirseq)-initial-setup
