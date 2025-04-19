@@ -3,16 +3,22 @@ package dirseq
 import (
 	"database/sql"
 	"fmt"
+	"log/slog"
+	"os"
 	"path/filepath"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
-const (
-	dbFileName    = "mem.db"
-	tableName     = "sequences"
-)
 
-func SetupDatabase(configDirPath string) (*sql.DB, error) {
-	dbPath := filepath.Join(configDirPath, dbFileName)
+func SetupDatabase() (*sql.DB, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		slog.Error("Failed to get user home directory", "error", err)
+		os.Exit(1)
+	}
+	dbPath := filepath.Join(homeDir, ConfigDirPath)
+	dbPath = filepath.Join(dbPath, DbFileName)
 
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
@@ -29,12 +35,12 @@ func SetupDatabase(configDirPath string) (*sql.DB, error) {
 	CREATE TABLE IF NOT EXISTS %s (
 		abs_path VARCHAR NOT NULL PRIMARY KEY,
 		last_seq INT NOT NULL DEFAULT 0
-	);`, tableName)
+	);`, TableName)
 
 	_, err = db.Exec(createTableSQL)
 	if err != nil {
 		db.Close()
-		return nil, fmt.Errorf("error creating table '%s': %w", tableName, err)
+		return nil, fmt.Errorf("error creating table '%s': %w", TableName, err)
 	}
 
 	return db, nil
@@ -42,7 +48,7 @@ func SetupDatabase(configDirPath string) (*sql.DB, error) {
 
 func GetSequence(db *sql.DB, path string) (int, error) {
 	var lastSeq int
-	querySQL := fmt.Sprintf("SELECT last_seq FROM %s WHERE abs_path = ?", tableName)
+	querySQL := fmt.Sprintf("SELECT last_seq FROM %s WHERE abs_path = ?", TableName)
 
 	row := db.QueryRow(querySQL, path)
 	err := row.Scan(&lastSeq)
@@ -60,7 +66,7 @@ func UpdateSequence(db *sql.DB, path string, newSeq int) error {
 	upsertSQL := fmt.Sprintf(`
 	INSERT INTO %s (abs_path, last_seq) VALUES (?, ?)
 	ON CONFLICT(abs_path) DO UPDATE SET last_seq = excluded.last_seq;
-	`, tableName)
+	`, TableName)
 
 	_, err := db.Exec(upsertSQL, path, newSeq)
 	if err != nil {

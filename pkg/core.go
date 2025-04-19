@@ -5,10 +5,13 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+
+	"github.com/sarkarshuvojit/pprinter"
 )
 
+var PPrinter = pprinter.WithTheme(&pprinter.AyuTheme)
+
 func Show(
-	configDirName string,
 	padding int,
 ) {
 	homeDir, err := os.UserHomeDir()
@@ -17,7 +20,7 @@ func Show(
 		os.Exit(1)
 	}
 
-	configDirPath := filepath.Join(homeDir, configDirName)
+	configDirPath := filepath.Join(homeDir, ConfigDirPath)
 
 	err = os.MkdirAll(configDirPath, 0755)
 	if err != nil {
@@ -25,7 +28,7 @@ func Show(
 		os.Exit(1)
 	}
 
-	db, err := SetupDatabase(configDirPath)
+	db, err := SetupDatabase()
 	if err != nil {
 		slog.Error("Failed to set up database", "error", err)
 		os.Exit(1)
