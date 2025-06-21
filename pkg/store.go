@@ -12,10 +12,10 @@ import (
 
 type Store[T any] interface {
 	SetupDatabase() (*T, error)
-	GetSequence(db *T, path string) (int, error)
-	GetSequenceAndPadding(db *T, path string) (int, int, error)
-	UpdateSequence(db *T, path string, newSeq int) error
-	UpdatePadding(db *T, path string, padding int) error
+	GetSequence(path string) (int, error)
+	GetSequenceAndPadding(path string) (int, int, error)
+	UpdateSequence(path string, newSeq int) error
+	UpdatePadding(path string, padding int) error
 }
 
 type SqliteStore struct {
@@ -23,11 +23,11 @@ type SqliteStore struct {
 }
 
 // GetSequence implements Store.
-func (s *SqliteStore) GetSequence(db *sql.DB, path string) (int, error) {
+func (s *SqliteStore) GetSequence(path string) (int, error) {
 	var lastSeq int
 	querySQL := fmt.Sprintf("SELECT last_seq FROM %s WHERE abs_path = ?", TableName)
 
-	row := db.QueryRow(querySQL, path)
+	row := s.db.QueryRow(querySQL, path)
 	err := row.Scan(&lastSeq)
 
 	if err != nil {
@@ -40,13 +40,13 @@ func (s *SqliteStore) GetSequence(db *sql.DB, path string) (int, error) {
 }
 
 // GetSequenceAndPadding implements Store.
-func (s *SqliteStore) GetSequenceAndPadding(db *sql.DB, path string) (int, int, error) {
+func (s *SqliteStore) GetSequenceAndPadding(path string) (int, int, error) {
 	var lastSeq int
 	var padding int
 
 	querySQL := fmt.Sprintf("SELECT last_seq, padding FROM %s WHERE abs_path = ?", TableName)
 
-	row := db.QueryRow(querySQL, path)
+	row := s.db.QueryRow(querySQL, path)
 	err := row.Scan(&lastSeq, &padding)
 
 	if err != nil {
@@ -98,7 +98,7 @@ func (s *SqliteStore) SetupDatabase() (*sql.DB, error) {
 }
 
 // UpdatePadding implements Store.
-func (s *SqliteStore) UpdatePadding(db *sql.DB, path string, padding int) error {
+func (s *SqliteStore) UpdatePadding(path string, padding int) error {
 	updatePaddingSql := fmt.Sprintf(`
 		INSERT INTO %s (abs_path, padding)
 		VALUES (?, ?)
@@ -106,7 +106,7 @@ func (s *SqliteStore) UpdatePadding(db *sql.DB, path string, padding int) error 
 		DO UPDATE SET padding = excluded.padding
 	`, TableName)
 
-	_, err := db.Exec(updatePaddingSql, path, padding)
+	_, err := s.db.Exec(updatePaddingSql, path, padding)
 	if err != nil {
 		return fmt.Errorf("error executing upsert for path '%s' with sequence %d: %w", path, padding, err)
 	}
@@ -114,13 +114,13 @@ func (s *SqliteStore) UpdatePadding(db *sql.DB, path string, padding int) error 
 }
 
 // UpdateSequence implements Store.
-func (s *SqliteStore) UpdateSequence(db *sql.DB, path string, newSeq int) error {
+func (s *SqliteStore) UpdateSequence(path string, newSeq int) error {
 	upsertSQL := fmt.Sprintf(`
 	INSERT INTO %s (abs_path, last_seq) VALUES (?, ?)
 	ON CONFLICT(abs_path) DO UPDATE SET last_seq = excluded.last_seq;
 	`, TableName)
 
-	_, err := db.Exec(upsertSQL, path, newSeq)
+	_, err := s.db.Exec(upsertSQL, path, newSeq)
 	if err != nil {
 		return fmt.Errorf("error executing upsert for path '%s' with sequence %d: %w", path, newSeq, err)
 	}

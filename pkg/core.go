@@ -46,7 +46,7 @@ func Show(
 		os.Exit(1)
 	}
 
-	lastSeq, configPadding, err := store.GetSequenceAndPadding(db, absPath)
+	lastSeq, configPadding, err := store.GetSequenceAndPadding(absPath)
 	if err != nil {
 		slog.Error("Failed to retrieve sequence", "path", absPath, "error", err)
 		os.Exit(1)
@@ -58,7 +58,7 @@ func Show(
 	}
 	fmt.Printf("%0*d\n", configPadding, newSeq)
 
-	err = store.UpdateSequence(db, absPath, newSeq)
+	err = store.UpdateSequence(absPath, newSeq)
 	if err != nil {
 		slog.Error("Failed to update sequence", "path", absPath, "new_sequence", newSeq, "error", err)
 		os.Exit(1)

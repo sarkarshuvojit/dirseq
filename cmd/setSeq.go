@@ -51,13 +51,13 @@ Example:
 		}
 
 		store := &dirseq.SqliteStore{}
-		db, err := store.SetupDatabase()
+		_, err = store.SetupDatabase()
 		if err != nil {
 			slog.Error("Failed to setup db path", "error", err)
 			os.Exit(1)
 		}
 
-		store.UpdateSequence(db, absPath, overrideSeq)
+		store.UpdateSequence(absPath, overrideSeq)
 
 		dirseq.PPrinter.Info(fmt.Sprintf("Set sequence to %d", overrideSeq))
 		return nil

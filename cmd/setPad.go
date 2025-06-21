@@ -54,13 +54,13 @@ Examples:
 		}
 
 		store := &dirseq.SqliteStore{}
-		db, err := store.SetupDatabase()
+		_, err = store.SetupDatabase()
 		if err != nil {
 			slog.Error("Failed to setup db path", "error", err)
 			os.Exit(1)
 		}
 
-		store.UpdatePadding(db, absPath, padding)
+		store.UpdatePadding(absPath, padding)
 
 		dirseq.PPrinter.Info(fmt.Sprintf("Set padding for %s to %d", absPath, padding))
 		return nil
