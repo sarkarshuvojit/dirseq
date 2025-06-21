@@ -1,9 +1,5 @@
 package dirseq
 
-import (
-	_ "github.com/mattn/go-sqlite3"
-)
-
 type Store[T any] interface {
 	SetupDatabase() (*T, error)
 	GetSequence(path string) (int, error)
