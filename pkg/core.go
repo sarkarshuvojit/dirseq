@@ -27,13 +27,12 @@ func Show(
 		slog.Error("Failed to create config directory", "path", configDirPath, "error", err)
 		os.Exit(1)
 	}
-	store := &SqliteStore{}
-	db, err := store.SetupDatabase()
+	store := &JsonStore{}
+	_, err = store.SetupDatabase()
 	if err != nil {
 		slog.Error("Failed to set up database", "error", err)
 		os.Exit(1)
 	}
-	defer db.Close()
 
 	currentPath, err := os.Getwd()
 	if err != nil {

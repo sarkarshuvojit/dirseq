@@ -50,7 +50,7 @@ Example:
 			os.Exit(1)
 		}
 
-		store := &dirseq.SqliteStore{}
+		store := &dirseq.JsonStore{}
 		_, err = store.SetupDatabase()
 		if err != nil {
 			slog.Error("Failed to setup db path", "error", err)
