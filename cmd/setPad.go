@@ -33,7 +33,7 @@ Examples:
   01
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) != 1{
+		if len(args) != 1 {
 			return errors.New("Expecting one arg; the number to be set.")
 		}
 
@@ -46,20 +46,21 @@ Examples:
 		if err != nil {
 			slog.Error("Failed to get current working directory", "error", err)
 			os.Exit(1)
-		} 
+		}
 		absPath, err := filepath.Abs(currentPath)
 		if err != nil {
 			slog.Error("Failed to get absolute path", "for", currentPath, "error", err)
 			os.Exit(1)
 		}
 
-		db, err := dirseq.SetupDatabase()
+		store := &dirseq.JsonStore{}
+		_, err = store.SetupDatabase()
 		if err != nil {
 			slog.Error("Failed to setup db path", "error", err)
 			os.Exit(1)
 		}
 
-		dirseq.UpdatePadding(db, absPath, padding)
+		store.UpdatePadding(absPath, padding)
 
 		dirseq.PPrinter.Info(fmt.Sprintf("Set padding for %s to %d", absPath, padding))
 		return nil

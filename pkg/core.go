@@ -27,13 +27,12 @@ func Show(
 		slog.Error("Failed to create config directory", "path", configDirPath, "error", err)
 		os.Exit(1)
 	}
-
-	db, err := SetupDatabase()
+	store := &JsonStore{}
+	_, err = store.SetupDatabase()
 	if err != nil {
 		slog.Error("Failed to set up database", "error", err)
 		os.Exit(1)
 	}
-	defer db.Close()
 
 	currentPath, err := os.Getwd()
 	if err != nil {
@@ -46,7 +45,7 @@ func Show(
 		os.Exit(1)
 	}
 
-	lastSeq, configPadding, err := GetSequenceAndPadding(db, absPath)
+	lastSeq, configPadding, err := store.GetSequenceAndPadding(absPath)
 	if err != nil {
 		slog.Error("Failed to retrieve sequence", "path", absPath, "error", err)
 		os.Exit(1)
@@ -58,7 +57,7 @@ func Show(
 	}
 	fmt.Printf("%0*d\n", configPadding, newSeq)
 
-	err = UpdateSequence(db, absPath, newSeq)
+	err = store.UpdateSequence(absPath, newSeq)
 	if err != nil {
 		slog.Error("Failed to update sequence", "path", absPath, "new_sequence", newSeq, "error", err)
 		os.Exit(1)
