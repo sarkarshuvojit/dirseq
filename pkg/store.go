@@ -10,8 +10,57 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type Store[T any] interface {
+	SetupDatabase() (*T, error)
+	GetSequence(db *T, path string) (int, error)
+	GetSequenceAndPadding(db *T, path string) (int, int, error)
+	UpdateSequence(db *T, path string, newSeq int) error
+	UpdatePadding(db *T, path string, padding int) error
+}
 
-func SetupDatabase() (*sql.DB, error) {
+type SqliteStore struct {
+	db *sql.DB
+}
+
+// GetSequence implements Store.
+func (s *SqliteStore) GetSequence(db *sql.DB, path string) (int, error) {
+	var lastSeq int
+	querySQL := fmt.Sprintf("SELECT last_seq FROM %s WHERE abs_path = ?", TableName)
+
+	row := db.QueryRow(querySQL, path)
+	err := row.Scan(&lastSeq)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, nil // Path not found is not an application error here
+		}
+		return 0, fmt.Errorf("error scanning sequence row for path '%s': %w", path, err)
+	}
+	return lastSeq, nil
+}
+
+// GetSequenceAndPadding implements Store.
+func (s *SqliteStore) GetSequenceAndPadding(db *sql.DB, path string) (int, int, error) {
+	var lastSeq int
+	var padding int
+
+	querySQL := fmt.Sprintf("SELECT last_seq, padding FROM %s WHERE abs_path = ?", TableName)
+
+	row := db.QueryRow(querySQL, path)
+	err := row.Scan(&lastSeq, &padding)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, 0, nil // No entry for this path; return defaults
+		}
+		return 0, 0, fmt.Errorf("error scanning sequence row for path '%s': %w", path, err)
+	}
+
+	return lastSeq, padding, nil
+}
+
+// SetupDatabase implements Store.
+func (s *SqliteStore) SetupDatabase() (*sql.DB, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		slog.Error("Failed to get user home directory", "error", err)
@@ -48,55 +97,8 @@ func SetupDatabase() (*sql.DB, error) {
 	return db, nil
 }
 
-func GetSequence(db *sql.DB, path string) (int, error) {
-	var lastSeq int
-	querySQL := fmt.Sprintf("SELECT last_seq FROM %s WHERE abs_path = ?", TableName)
-
-	row := db.QueryRow(querySQL, path)
-	err := row.Scan(&lastSeq)
-
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return 0, nil // Path not found is not an application error here
-		}
-		return 0, fmt.Errorf("error scanning sequence row for path '%s': %w", path, err)
-	}
-	return lastSeq, nil
-}
-
-func GetSequenceAndPadding(db *sql.DB, path string) (int, int, error) {
-	var lastSeq int
-	var padding int
-
-	querySQL := fmt.Sprintf("SELECT last_seq, padding FROM %s WHERE abs_path = ?", TableName)
-
-	row := db.QueryRow(querySQL, path)
-	err := row.Scan(&lastSeq, &padding)
-
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return 0, 0, nil // No entry for this path; return defaults
-		}
-		return 0, 0, fmt.Errorf("error scanning sequence row for path '%s': %w", path, err)
-	}
-
-	return lastSeq, padding, nil
-}
-
-func UpdateSequence(db *sql.DB, path string, newSeq int) error {
-	upsertSQL := fmt.Sprintf(`
-	INSERT INTO %s (abs_path, last_seq) VALUES (?, ?)
-	ON CONFLICT(abs_path) DO UPDATE SET last_seq = excluded.last_seq;
-	`, TableName)
-
-	_, err := db.Exec(upsertSQL, path, newSeq)
-	if err != nil {
-		return fmt.Errorf("error executing upsert for path '%s' with sequence %d: %w", path, newSeq, err)
-	}
-	return nil
-}
-
-func UpdatePadding(db *sql.DB, path string, padding int) error {
+// UpdatePadding implements Store.
+func (s *SqliteStore) UpdatePadding(db *sql.DB, path string, padding int) error {
 	updatePaddingSql := fmt.Sprintf(`
 		INSERT INTO %s (abs_path, padding)
 		VALUES (?, ?)
@@ -110,3 +112,19 @@ func UpdatePadding(db *sql.DB, path string, padding int) error {
 	}
 	return nil
 }
+
+// UpdateSequence implements Store.
+func (s *SqliteStore) UpdateSequence(db *sql.DB, path string, newSeq int) error {
+	upsertSQL := fmt.Sprintf(`
+	INSERT INTO %s (abs_path, last_seq) VALUES (?, ?)
+	ON CONFLICT(abs_path) DO UPDATE SET last_seq = excluded.last_seq;
+	`, TableName)
+
+	_, err := db.Exec(upsertSQL, path, newSeq)
+	if err != nil {
+		return fmt.Errorf("error executing upsert for path '%s' with sequence %d: %w", path, newSeq, err)
+	}
+	return nil
+}
+
+var _ Store[sql.DB] = (*SqliteStore)(nil)
