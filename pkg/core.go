@@ -5,11 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
-
-	"github.com/sarkarshuvojit/pprinter"
 )
-
-var PPrinter = pprinter.WithTheme(&pprinter.PastelTheme)
 
 func Show(
 	padding int,
