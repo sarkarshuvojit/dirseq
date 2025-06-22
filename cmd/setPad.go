@@ -62,7 +62,7 @@ Examples:
 
 		store.UpdatePadding(absPath, padding)
 
-		dirseq.PPrinter.Info(fmt.Sprintf("Set padding for %s to %d", absPath, padding))
+		fmt.Printf("Set padding for %s to %d\n", absPath, padding)
 		return nil
 	},
 }

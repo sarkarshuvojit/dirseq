@@ -59,7 +59,7 @@ Example:
 
 		store.UpdateSequence(absPath, overrideSeq)
 
-		dirseq.PPrinter.Info(fmt.Sprintf("Set sequence to %d", overrideSeq))
+		fmt.Printf("Set sequence to %d\n", overrideSeq)
 		return nil
 	},
 }
