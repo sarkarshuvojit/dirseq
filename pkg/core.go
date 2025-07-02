@@ -18,7 +18,7 @@ func Show(
 
 	configDirPath := filepath.Join(homeDir, ConfigDirPath)
 
-	err = os.MkdirAll(configDirPath, 0755)
+	err = os.MkdirAll(configDirPath, 0700)
 	if err != nil {
 		slog.Error("Failed to create config directory", "path", configDirPath, "error", err)
 		os.Exit(1)
