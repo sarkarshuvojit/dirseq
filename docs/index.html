@@ -467,6 +467,97 @@
         </div>
     </section>
 
+    <!-- Real-World Showcases Section -->
+    <section class="py-32 bg-gray-925 section-divider">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl md:text-6xl font-bold mb-8 gradient-text">Real-World Showcases</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">See how developers use dirseq to streamline their daily workflows</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <!-- Tab Navigation -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button class="showcase-tab active px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-primary/20 text-primary border border-primary/30" data-tab="0">
+                        🧪 ML Experiments
+                    </button>
+                    <button class="showcase-tab px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-800/50 text-gray-400 border border-gray-700 hover:bg-gray-700/50" data-tab="1">
+                        📦 Build Artifacts
+                    </button>
+                    <button class="showcase-tab px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-800/50 text-gray-400 border border-gray-700 hover:bg-gray-700/50" data-tab="2">
+                        📝 Session Logs
+                    </button>
+                    <button class="showcase-tab px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-800/50 text-gray-400 border border-gray-700 hover:bg-gray-700/50" data-tab="3">
+                        ⚙️ Configuration
+                    </button>
+                    <button class="showcase-tab px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-800/50 text-gray-400 border border-gray-700 hover:bg-gray-700/50" data-tab="4">
+                        📁 Organization
+                    </button>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="showcase-content-wrapper bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl border border-gray-800/50 overflow-hidden">
+                    <!-- Header -->
+                    <div class="showcase-header p-6 pb-4 border-b border-gray-800/50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="showcase-icon w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center">
+                                    <span class="text-2xl">🧪</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white showcase-title">ML Experiment Tracking</h3>
+                                    <p class="text-gray-400 text-sm showcase-subtitle">Automatically version research iterations and results</p>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Code Content -->
+                    <div class="showcase-content bg-gray-950/80 p-8 font-mono text-sm min-h-96">
+                        <div class="space-y-4 text-gray-300">
+                            <div class="text-gray-500"># Create experiment directories</div>
+                            <div><span class="text-primary">mkdir</span> <span class="text-amber-400">$(dirseq)</span><span class="text-white">-initial-setup</span></div>
+                            <div class="text-gray-500"># → Creates: 1-initial-setup</div>
+                            
+                            <div class="pt-3"><span class="text-primary">mkdir</span> <span class="text-amber-400">$(dirseq)</span><span class="text-white">-feature-work</span></div>
+                            <div class="text-gray-500"># → Creates: 2-feature-work</div>
+                            
+                            <div class="pt-3"><span class="text-primary">python</span> <span class="text-white">train.py</span> <span class="text-blue-400">></span> <span class="text-white">results-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">.log</span></div>
+                            <div class="text-gray-500"># → Creates: results-3.log</div>
+                            
+                            <div class="pt-3"><span class="text-primary">python</span> <span class="text-white">evaluate.py</span> <span class="text-blue-400">--model</span> <span class="text-white">v</span><span class="text-amber-400">$(dirseq)</span> <span class="text-blue-400">></span> <span class="text-white">eval-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">.json</span></div>
+                            <div class="text-gray-500"># → Creates: eval-4.json</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress indicators -->
+                <div class="flex justify-center mt-8 space-x-2">
+                    <div class="showcase-dot w-2 h-2 rounded-full bg-primary transition-all duration-300"></div>
+                    <div class="showcase-dot w-2 h-2 rounded-full bg-gray-600 transition-all duration-300"></div>
+                    <div class="showcase-dot w-2 h-2 rounded-full bg-gray-600 transition-all duration-300"></div>
+                    <div class="showcase-dot w-2 h-2 rounded-full bg-gray-600 transition-all duration-300"></div>
+                    <div class="showcase-dot w-2 h-2 rounded-full bg-gray-600 transition-all duration-300"></div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <div class="inline-flex items-center space-x-4 bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-800/50">
+                    <div class="text-primary text-xl">💡</div>
+                    <div class="text-left">
+                        <div class="font-medium text-white">Pro Tip</div>
+                        <div class="text-gray-400 text-sm">Each directory maintains its own independent sequence, so you can use dirseq across multiple projects simultaneously</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Installation Section -->
     <section id="installation" class="py-32 bg-gray-925 section-divider">
         <div class="container mx-auto px-6">
@@ -636,6 +727,183 @@
                     el.style.animationPlayState = 'running';
                 });
             });
+
+            // Showcase tab functionality
+            const showcases = [
+                {
+                    title: "ML Experiment Tracking",
+                    subtitle: "Automatically version research iterations and results",
+                    icon: "🧪",
+                    gradient: "from-primary to-primary-dark",
+                    content: `<div class="space-y-4 text-gray-300">
+                        <div class="text-gray-500"># Create experiment directories</div>
+                        <div><span class="text-primary">mkdir</span> <span class="text-amber-400">$(dirseq)</span><span class="text-white">-initial-setup</span></div>
+                        <div class="text-gray-500"># → Creates: 1-initial-setup</div>
+                        
+                        <div class="pt-3"><span class="text-primary">mkdir</span> <span class="text-amber-400">$(dirseq)</span><span class="text-white">-feature-work</span></div>
+                        <div class="text-gray-500"># → Creates: 2-feature-work</div>
+                        
+                        <div class="pt-3"><span class="text-primary">python</span> <span class="text-white">train.py</span> <span class="text-blue-400">></span> <span class="text-white">results-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">.log</span></div>
+                        <div class="text-gray-500"># → Creates: results-3.log</div>
+                        
+                        <div class="pt-3"><span class="text-primary">python</span> <span class="text-white">evaluate.py</span> <span class="text-blue-400">--model</span> <span class="text-white">v</span><span class="text-amber-400">$(dirseq)</span> <span class="text-blue-400">></span> <span class="text-white">eval-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">.json</span></div>
+                        <div class="text-gray-500"># → Creates: eval-4.json</div>
+                    </div>`
+                },
+                {
+                    title: "Build Artifact Versioning",
+                    subtitle: "Sequential builds and releases for different platforms",
+                    icon: "📦",
+                    gradient: "from-blue-500 to-blue-600",
+                    content: `<div class="space-y-4 text-gray-300">
+                        <div class="text-gray-500"># Version your builds automatically</div>
+                        <div><span class="text-primary">npm run build</span> <span class="text-blue-400">&&</span> <span class="text-primary">tar -czf</span> <span class="text-white">release-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">.tar.gz dist/</span></div>
+                        <div class="text-gray-500"># → Creates: release-1.tar.gz</div>
+                        
+                        <div class="pt-3"><span class="text-primary">docker build</span> <span class="text-white">-t myapp:</span><span class="text-amber-400">$(dirseq)</span> <span class="text-white">.</span></div>
+                        <div class="text-gray-500"># → Tags: myapp:2</div>
+                        
+                        <div class="pt-3"><span class="text-primary">cargo build</span> <span class="text-blue-400">--release &&</span> <span class="text-primary">cp</span> <span class="text-white">target/release/app build-</span><span class="text-amber-400">$(dirseq)</span></div>
+                        <div class="text-gray-500"># → Creates: build-3</div>
+                        
+                        <div class="pt-3"><span class="text-primary">go build</span> <span class="text-blue-400">-o</span> <span class="text-white">dist/app-</span><span class="text-amber-400">$(dirseq)</span></div>
+                        <div class="text-gray-500"># → Creates: dist/app-4</div>
+                    </div>`
+                },
+                {
+                    title: "Session & Log Management",
+                    subtitle: "Organized debugging and testing sessions with padding",
+                    icon: "📝",
+                    gradient: "from-purple-500 to-purple-600",
+                    content: `<div class="space-y-4 text-gray-300">
+                        <div class="text-gray-500"># Debug sessions with padding</div>
+                        <div><span class="text-primary">gdb</span> <span class="text-white">./myapp</span> <span class="text-blue-400">></span> <span class="text-white">debug-session-</span><span class="text-amber-400">$(dirseq -p 3)</span><span class="text-white">.log</span></div>
+                        <div class="text-gray-500"># → Creates: debug-session-001.log</div>
+                        
+                        <div class="pt-3"><span class="text-primary">pytest</span> <span class="text-blue-400">--verbose</span> <span class="text-blue-400">></span> <span class="text-white">test-run-</span><span class="text-amber-400">$(dirseq -p 3)</span><span class="text-white">.log</span></div>
+                        <div class="text-gray-500"># → Creates: test-run-002.log</div>
+                        
+                        <div class="pt-3"><span class="text-primary">curl</span> <span class="text-white">-X POST api/endpoint</span> <span class="text-blue-400">></span> <span class="text-white">response-</span><span class="text-amber-400">$(dirseq -p 3)</span><span class="text-white">.json</span></div>
+                        <div class="text-gray-500"># → Creates: response-003.json</div>
+                        
+                        <div class="pt-3"><span class="text-primary">strace</span> <span class="text-white">./myapp</span> <span class="text-blue-400">2></span> <span class="text-white">trace-</span><span class="text-amber-400">$(dirseq -p 3)</span><span class="text-white">.log</span></div>
+                        <div class="text-gray-500"># → Creates: trace-004.log</div>
+                    </div>`
+                },
+                {
+                    title: "Advanced Configuration",
+                    subtitle: "Custom sequences and project setup with padding",
+                    icon: "⚙️",
+                    gradient: "from-amber-500 to-orange-500",
+                    content: `<div class="space-y-4 text-gray-300">
+                        <div class="text-gray-500"># Set custom starting point</div>
+                        <div><span class="text-primary">dirset</span> <span class="text-white">set-seq 100</span></div>
+                        <div class="text-gray-500"># → Next dirseq outputs: 101</div>
+                        
+                        <div class="pt-3"><span class="text-primary">dirset</span> <span class="text-white">set-pad 4</span></div>
+                        <div class="text-gray-500"># → Default padding for this directory</div>
+                        
+                        <div class="pt-3"><span class="text-primary">mkdir</span> <span class="text-white">backup-</span><span class="text-amber-400">$(dirseq)</span></div>
+                        <div class="text-gray-500"># → Creates: backup-0102 (with padding)</div>
+                        
+                        <div class="pt-3"><span class="text-primary">dirseq</span> <span class="text-blue-400">--pad 2</span></div>
+                        <div class="text-gray-500"># → Override padding: 03</div>
+                    </div>`
+                },
+                {
+                    title: "Project Organization",
+                    subtitle: "Organize backups, releases, and directory structures",
+                    icon: "📁",
+                    gradient: "from-emerald-500 to-green-600",
+                    content: `<div class="space-y-4 text-gray-300">
+                        <div class="text-gray-500"># Organize project directories</div>
+                        <div><span class="text-primary">mkdir</span> <span class="text-white">feature-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">-user-auth</span></div>
+                        <div class="text-gray-500"># → Creates: feature-1-user-auth</div>
+                        
+                        <div class="pt-3"><span class="text-primary">tar -czf</span> <span class="text-white">backup-</span><span class="text-amber-400">$(dirseq)</span><span class="text-white">.tar.gz project/</span></div>
+                        <div class="text-gray-500"># → Creates: backup-2.tar.gz</div>
+                        
+                        <div class="pt-3"><span class="text-primary">cp -r</span> <span class="text-white">config/ config-v</span><span class="text-amber-400">$(dirseq)</span></div>
+                        <div class="text-gray-500"># → Creates: config-v3</div>
+                        
+                        <div class="pt-3"><span class="text-primary">git tag</span> <span class="text-white">release-</span><span class="text-amber-400">$(dirseq)</span></div>
+                        <div class="text-gray-500"># → Creates: release-4</div>
+                    </div>`
+                }
+            ];
+
+            let currentTab = 0;
+            
+            function switchTab(index) {
+                const showcase = showcases[index];
+                
+                // Update tab states
+                document.querySelectorAll('.showcase-tab').forEach((tab, i) => {
+                    if (i === index) {
+                        tab.className = 'showcase-tab active px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-primary/20 text-primary border border-primary/30';
+                    } else {
+                        tab.className = 'showcase-tab px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-gray-800/50 text-gray-400 border border-gray-700 hover:bg-gray-700/50';
+                    }
+                });
+                
+                // Update icon
+                const iconElement = document.querySelector('.showcase-icon');
+                iconElement.innerHTML = `<span class="text-2xl">${showcase.icon}</span>`;
+                iconElement.className = `showcase-icon w-12 h-12 bg-gradient-to-br ${showcase.gradient} rounded-xl flex items-center justify-center`;
+                
+                // Update title and subtitle
+                document.querySelector('.showcase-title').textContent = showcase.title;
+                document.querySelector('.showcase-subtitle').textContent = showcase.subtitle;
+                
+                // Update content with fade animation
+                const contentElement = document.querySelector('.showcase-content');
+                contentElement.style.opacity = '0.5';
+                
+                setTimeout(() => {
+                    contentElement.innerHTML = showcase.content;
+                    contentElement.style.opacity = '1';
+                }, 150);
+                
+                // Update dots
+                document.querySelectorAll('.showcase-dot').forEach((dot, i) => {
+                    dot.className = i === index 
+                        ? 'showcase-dot w-2 h-2 rounded-full bg-primary transition-all duration-300'
+                        : 'showcase-dot w-2 h-2 rounded-full bg-gray-600 transition-all duration-300';
+                });
+                
+                currentTab = index;
+            }
+            
+            // Handle tab clicks
+            document.querySelectorAll('.showcase-tab').forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    switchTab(index);
+                });
+            });
+            
+            // Auto-cycle through tabs
+            let autoPlay = setInterval(() => {
+                currentTab = (currentTab + 1) % showcases.length;
+                switchTab(currentTab);
+            }, 5000);
+            
+            // Pause auto-play on hover
+            const showcaseWrapper = document.querySelector('.showcase-content-wrapper');
+            if (showcaseWrapper) {
+                showcaseWrapper.addEventListener('mouseenter', () => {
+                    clearInterval(autoPlay);
+                });
+                
+                showcaseWrapper.addEventListener('mouseleave', () => {
+                    autoPlay = setInterval(() => {
+                        currentTab = (currentTab + 1) % showcases.length;
+                        switchTab(currentTab);
+                    }, 5000);
+                });
+            }
+            
+            // Initialize first tab
+            switchTab(0);
         });
     </script>
 </body>
